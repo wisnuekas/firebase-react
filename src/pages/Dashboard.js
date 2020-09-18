@@ -1,27 +1,19 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Typography, makeStyles } from "@material-ui/core";
-
-const useStyles = makeStyles((theme) => ({
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-  root: {
-    flexGrow: 1,
-  },
-}));
+import { Typography } from "@material-ui/core";
+import Navbar from "../components/Navbar";
+import Content from "../components/Content";
 
 function Dashboard() {
-  const classes = useStyles();
-
   const { email } = useSelector((state) => state.firebase.auth);
 
   return (
-    <div className={classes.root}>
-      <h1>Dashboard</h1>
-      <h2>Halo, {email}</h2>
-      <main className={classes.content}>
+    <div style={{ display: "flex" }}>
+      <Navbar title="Dashoard" />
+
+      <Content>
+        <h1>Dashboard</h1>
+        <h2>Halo, {email}</h2>
         <Typography paragraph>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
@@ -51,7 +43,7 @@ function Dashboard() {
           eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
           posuere sollicitudin aliquam ultrices sagittis orci a.
         </Typography>
-      </main>
+      </Content>
     </div>
   );
 }

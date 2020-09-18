@@ -1,7 +1,15 @@
 import React, { useState } from "react";
-import { MenuItem, Menu, Avatar, Badge, withStyles } from "@material-ui/core";
+import {
+  MenuItem,
+  Menu,
+  Avatar,
+  Badge,
+  withStyles,
+  Divider,
+} from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { signOut } from "../store/actions/authActions";
+import { Link } from "react-router-dom";
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -61,7 +69,7 @@ function AccountMenu() {
         variant="dot"
         onClick={handleMenu}
       >
-        <Avatar alt="Admin Avatar" />
+        <Avatar alt="Avatar" src="/broken-image.jpg" />
       </StyledBadge>
       <Menu
         id="menu-appbar"
@@ -78,7 +86,10 @@ function AccountMenu() {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem component={Link} to="/profile" onClick={handleClose}>
+          Profile
+        </MenuItem>
+        <Divider />
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>

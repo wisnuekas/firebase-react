@@ -25,13 +25,18 @@ const store = createStore(
   rootReducer,
   compose(
     applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore })),
-    reduxFirestore(config)
+    reduxFirestore(firebase, config)
   )
 );
 
+const rrfConfig = {
+  userProfile: "users", // where profiles are stored in database
+  useFirestoreForProfile: true, // use Firestore for profile instead of RTDB
+};
+
 const rrfProps = {
   firebase,
-  config: config,
+  config: rrfConfig,
   dispatch: store.dispatch,
   createFirestoreInstance,
 };

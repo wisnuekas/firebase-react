@@ -7,12 +7,13 @@ import {
   Typography,
   CssBaseline,
   Avatar,
+  Grid,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { connect } from "react-redux";
 import { signIn } from "../store/actions/authActions";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,15 +33,20 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  center: {
+    textAlign: "center",
+  },
 }));
 
 function SignIn(props) {
   const classes = useStyles();
 
   const [creds, setCreds] = useState({
-    email: "test@ilife.test",
-    password: "test123",
+    email: "",
+    password: "",
   });
+
+  if (!props.auth.isEmpty) return <Redirect to="/dashboard" />;
 
   const handleChange = (e) => {
     setCreds({ ...creds, [e.target.id]: e.target.value });
@@ -50,8 +56,6 @@ function SignIn(props) {
     e.preventDefault();
     props.signIn(creds);
   };
-
-  if (!props.auth.isEmpty) return <Redirect to="/dashboard" />;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -99,6 +103,13 @@ function SignIn(props) {
           >
             Sign In
           </Button>
+          <Grid container className={classes.center}>
+            <Grid item xs>
+              <Link to="/recover" variant="body2">
+                Forgot password?
+              </Link>
+            </Grid>
+          </Grid>
           {props.authErr && <Alert severity="error">{props.authErr}</Alert>}
         </form>
       </div>

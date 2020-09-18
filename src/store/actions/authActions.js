@@ -24,3 +24,21 @@ export const signOut = () => {
       .then(() => dispatch({ type: "SIGNOUT_SUCCESS" }));
   };
 };
+
+export const sendPasswordResetEmail = (email) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+
+    console.log(email);
+
+    firebase
+      .auth()
+      .sendPasswordResetEmail(email)
+      .then(function () {
+        dispatch({ type: "SEND_PASSWORD_RESET_EMAIL_SUCCESS" });
+      })
+      .catch(function (error) {
+        dispatch({ type: "SEND_PASSWORD_RESET_EMAIL_FAILED", error });
+      });
+  };
+};
