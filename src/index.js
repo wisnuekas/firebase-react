@@ -20,17 +20,23 @@ import {
 import config from "./config/firebase";
 import firebase from "firebase";
 import Loader from "./components/Loader";
+import { SnackbarProvider } from "notistack";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import ilife from "./theme.json";
+
+const theme = createMuiTheme(ilife);
 
 const store = createStore(
   rootReducer,
   compose(
     applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore })),
-    reduxFirestore(firebase, config)
+    reduxFirestore(firebase, config),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 );
 
 const rrfConfig = {
-  userProfile: "users", // where profiles are stored in database
+  userProfile: "admins", // where profiles are stored in database
   useFirestoreForProfile: true, // use Firestore for profile instead of RTDB
 };
 
@@ -43,7 +49,9 @@ const rrfProps = {
 
 function AuthIsLoaded({ children }) {
   const auth = useSelector((state) => state.firebase.auth);
-  if (!isLoaded(auth)) return <Loader />;
+  const profile = useSelector((state) => state.firebase.profile);
+
+  if (!isLoaded(auth) && !isLoaded(profile)) return <Loader />;
   return children;
 }
 
@@ -51,7 +59,11 @@ ReactDOM.render(
   <Provider store={store}>
     <ReactReduxFirebaseProvider {...rrfProps}>
       <AuthIsLoaded>
-        <App />
+        <MuiThemeProvider theme={theme}>
+          <SnackbarProvider>
+            <App />
+          </SnackbarProvider>
+        </MuiThemeProvider>
       </AuthIsLoaded>
     </ReactReduxFirebaseProvider>
   </Provider>,

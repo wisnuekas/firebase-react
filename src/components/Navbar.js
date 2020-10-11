@@ -21,6 +21,8 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import PeopleIcon from "@material-ui/icons/People";
 import AccountMenu from "./AccountMenu";
 import FormatQuoteIcon from "@material-ui/icons/FormatQuote";
+import { useSelector } from "react-redux";
+import LockOpenIcon from "@material-ui/icons/LockOpen";
 
 const drawerWidth = 240;
 
@@ -61,6 +63,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Navbar(props) {
+  const classes = useStyles();
+  const theme = useTheme();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const auth = useSelector((state) => state.firebase.auth);
+  if (auth.isEmpty) return null;
+
+  const AdminNav = () => (
+    <div>
+      <Divider />
+      <List>
+        {navLink3.map((nav, index) => (
+          <ListItem component={Link} to={nav.link} key={index} button>
+            <ListItemIcon>{nav.icon}</ListItemIcon>
+            <ListItemText primary={nav.name} />
+          </ListItem>
+        ))}
+      </List>
+    </div>
+  );
+
   const navLink = [
     { name: "Dashboard", icon: <DashboardIcon />, link: "/dashboard" },
     { name: "Order", icon: <ShoppingCartIcon />, link: "/order" },
@@ -73,10 +95,11 @@ function Navbar(props) {
     { name: "Notifikasi", icon: <InboxIcon />, link: "/notifikasi" },
   ];
 
+  const navLink3 = [
+    { name: "List Admin", icon: <LockOpenIcon />, link: "/admins" },
+  ];
+
   const { window } = props;
-  const classes = useStyles();
-  const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -103,6 +126,7 @@ function Navbar(props) {
           </ListItem>
         ))}
       </List>
+      {props.profile.isSuper && <AdminNav />}
     </div>
   );
 
@@ -126,7 +150,7 @@ function Navbar(props) {
           <Typography variant="h6" noWrap className={classes.title}>
             {props.title}
           </Typography>
-          <AccountMenu />
+          <AccountMenu name={props.profile.displayName} />
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">

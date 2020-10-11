@@ -2,47 +2,24 @@ import React, { useState } from "react";
 import {
   MenuItem,
   Menu,
-  Avatar,
-  Badge,
-  withStyles,
   Divider,
+  Typography,
+  Button,
+  IconButton,
 } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../store/actions/authActions";
 import { Link } from "react-router-dom";
+import { enqueueSnackbar as enqueueSnackbarAction } from "../store/actions/appNotifActions";
+import CloseIcon from "@material-ui/icons/Close";
+import { closeSnackbar as closeSnackbarAction } from "../store/actions/appNotifActions";
 
-const StyledBadge = withStyles((theme) => ({
-  badge: {
-    backgroundColor: "#44b700",
-    color: "#44b700",
-    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-    "&::after": {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      borderRadius: "50%",
-      animation: "$ripple 1.2s infinite ease-in-out",
-      border: "1px solid currentColor",
-      content: '""',
-    },
-  },
-  "@keyframes ripple": {
-    "0%": {
-      transform: "scale(.8)",
-      opacity: 1,
-    },
-    "100%": {
-      transform: "scale(2.4)",
-      opacity: 0,
-    },
-  },
-}))(Badge);
-
-function AccountMenu() {
+function AccountMenu(props) {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
+  const profile = useSelector((state) => state.firebase.profile);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,23 +31,48 @@ function AccountMenu() {
 
   const handleLogout = () => {
     dispatch(signOut());
+
+    setTimeout(() => {
+      dispatch(
+        enqueueSnackbarAction({
+          message: "Logout Berhasil",
+          options: {
+            key: new Date().getTime() + Math.random(),
+            variant: "info",
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "right",
+            },
+            action: (key) => {
+              return (
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  style={{ padding: 0.5 }}
+                  onClick={() => dispatch(closeSnackbarAction(key))}
+                >
+                  <CloseIcon />
+                </IconButton>
+              );
+            },
+          },
+        })
+      );
+    }, 2000);
   };
 
   const open = Boolean(anchorEl);
 
   return (
     <div>
-      <StyledBadge
-        overlap="circle"
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-        variant="dot"
+      <Button
         onClick={handleMenu}
+        color="inherit"
+        size="large"
+        endIcon={<AccountCircleIcon style={{ height: 25, width: 25 }} />}
       >
-        <Avatar alt="Avatar" src="/broken-image.jpg" />
-      </StyledBadge>
+        {profile.displayName}
+      </Button>
       <Menu
         id="menu-appbar"
         anchorEl={anchorEl}
@@ -87,7 +89,9 @@ function AccountMenu() {
         onClose={handleClose}
       >
         <MenuItem component={Link} to="/profile" onClick={handleClose}>
-          Profile
+          <Typography variant="subtitle1" gutterBottom>
+            Profile
+          </Typography>
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleLogout}>Logout</MenuItem>

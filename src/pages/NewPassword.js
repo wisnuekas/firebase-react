@@ -1,20 +1,20 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Content from "../components/Content";
+import FormNewPassword from "../components/forms/FormNewPassword";
 import { setTitle } from "../store/actions/titleActions";
 
-const Notifikasi = () => {
+const NewPassword = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setTitle("Notifikasi"));
+    dispatch(setTitle("New Password"));
   }, [dispatch]);
-
   return (
-    <div>
-      <Content>Notifikasi</Content>
-    </div>
+    <Content>
+      <FormNewPassword />
+    </Content>
   );
 };
 
-export default Notifikasi;
+export default NewPassword;

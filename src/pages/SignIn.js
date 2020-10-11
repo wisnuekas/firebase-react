@@ -65,7 +65,7 @@ function SignIn(props) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          I-Life
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
@@ -74,7 +74,7 @@ function SignIn(props) {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Email"
             name="email"
             autoComplete="email"
             autoFocus
@@ -101,12 +101,12 @@ function SignIn(props) {
             margin="normal"
             className={classes.submit}
           >
-            Sign In
+            Masuk
           </Button>
           <Grid container className={classes.center}>
             <Grid item xs>
               <Link to="/recover" variant="body2">
-                Forgot password?
+                Lupa Password?
               </Link>
             </Grid>
           </Grid>

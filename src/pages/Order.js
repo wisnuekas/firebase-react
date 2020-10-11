@@ -1,16 +1,21 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useEffect } from "react";
+import { connect, useDispatch } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
-import Navbar from "../components/Navbar";
 import Content from "../components/Content";
+import { setTitle } from "../store/actions/titleActions";
 
 function Order(props) {
   const orders = props.orders;
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setTitle("Order"));
+  }, [dispatch]);
+
   return (
-    <div style={{ display: "flex" }}>
-      <Navbar title="Order" />
+    <div>
       <Content>
         <ul>
           {orders &&
@@ -28,7 +33,7 @@ function Order(props) {
 
 const mapStateToProps = (state) => {
   return {
-    orders: state.firestore.ordered.orders,
+    orders: state.firestore.ordered.orders, // .ordered to order order's data
   };
 };
 

@@ -4,4 +4,17 @@ body {
 
 a {
   text-decoration: none;
+  color: rgba(0, 87, 165, 1);
+}
+
+.App {
+  display: flex;
+}
+
+.section {
+  margin-bottom: 16px;
+}
+
+.export-btn {
+  flex: 0 0 auto;
 }

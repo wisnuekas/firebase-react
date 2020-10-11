@@ -1,18 +1,84 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Typography } from "@material-ui/core";
-import Navbar from "../components/Navbar";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, IconButton, Typography } from "@material-ui/core";
 import Content from "../components/Content";
+import { setTitle } from "../store/actions/titleActions";
+import {
+  enqueueSnackbar as enqueueSnackbarAction,
+  closeSnackbar as closeSnackbarAction,
+} from "../store/actions/appNotifActions";
+import CloseIcon from "@material-ui/icons/Close";
 
 function Dashboard() {
   const { email } = useSelector((state) => state.firebase.auth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setTitle("Dashboard"));
+  }, [dispatch]);
 
   return (
     <div style={{ display: "flex" }}>
-      <Navbar title="Dashoard" />
-
       <Content>
         <h1>Dashboard</h1>
+        <Button
+          onClick={() => {
+            Promise.all([
+              dispatch(
+                enqueueSnackbarAction({
+                  message: "Clicked",
+                  options: {
+                    key: new Date().getTime() + Math.random(),
+                    variant: "info",
+                    anchorOrigin: {
+                      vertical: "top",
+                      horizontal: "right",
+                    },
+                    action: (key) => {
+                      return (
+                        <IconButton
+                          aria-label="close"
+                          color="inherit"
+                          style={{ padding: 0.5 }}
+                          onClick={() => dispatch(closeSnackbarAction(key))}
+                        >
+                          <CloseIcon />
+                        </IconButton>
+                      );
+                    },
+                  },
+                })
+              ),
+              dispatch(
+                enqueueSnackbarAction({
+                  message: "Clicked",
+                  options: {
+                    key: new Date().getTime() + Math.random(),
+                    variant: "success",
+                    anchorOrigin: {
+                      vertical: "top",
+                      horizontal: "right",
+                    },
+                    action: (key) => {
+                      return (
+                        <IconButton
+                          aria-label="close"
+                          color="inherit"
+                          style={{ padding: 0.5 }}
+                          onClick={() => dispatch(closeSnackbarAction(key))}
+                        >
+                          <CloseIcon />
+                        </IconButton>
+                      );
+                    },
+                  },
+                })
+              ),
+            ]);
+          }}
+        >
+          test
+        </Button>
         <h2>Halo, {email}</h2>
         <Typography paragraph>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

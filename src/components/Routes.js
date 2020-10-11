@@ -10,6 +10,8 @@ import Mitra from "../pages/Mitra";
 import Customer from "../pages/Customer";
 import Quote from "../pages/Quote";
 import Notifikasi from "../pages/Notifikasi";
+import Admins from "../pages/Admins";
+import NewPassword from "../pages/NewPassword";
 
 const ProtectedRoute = ({
   comp: Component, // use comp prop
@@ -43,6 +45,9 @@ export const Routes = () => {
 
       <ProtectedRoute path="/quote" comp={Quote} />
       <ProtectedRoute path="/notifikasi" comp={Notifikasi} />
+
+      <ProtectedRoute path="/admins" comp={Admins} />
+      <ProtectedRoute path="/newpassword" comp={NewPassword} />
     </Switch>
   );
 };

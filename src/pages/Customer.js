@@ -1,11 +1,17 @@
-import React from "react";
-import Navbar from "../components/Navbar";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import Content from "../components/Content";
+import { setTitle } from "../store/actions/titleActions";
 
 const Customer = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setTitle("Customer"));
+  }, [dispatch]);
+
   return (
-    <div style={{ display: "flex" }}>
-      <Navbar title="Customer" />
+    <div>
       <Content>Customer</Content>
     </div>
   );

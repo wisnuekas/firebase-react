@@ -1,4 +1,4 @@
-const initState = { authErr: null };
+const initState = { key: null, authErr: null };
 
 const authReducer = (state = initState, action) => {
   switch (action.type) {
@@ -24,11 +24,39 @@ const authReducer = (state = initState, action) => {
         authErr: null,
       };
     case "SEND_PASSWORD_RESET_EMAIL_FAILED":
-      console.log("Send password reset email failed");
+      console.log("Send password reset email failed", action.err);
       return {
         ...state,
         authErr:
           "Send password reset email failed. User may have been deleted.",
+      };
+    case "UPDATE_PROFILE_SUCCESS":
+      console.log("Update profile success");
+      return {
+        ...state,
+        authErr: null,
+        key: new Date().getTime() + Math.random(),
+      };
+    case "UPDATE_PROFILE_FAILED":
+      console.log("Update profile failed");
+      return {
+        ...state,
+        authErr: "Update profile failed",
+        key: new Date().getTime() + Math.random(),
+      };
+    case "UPDATE_PASSWORD_SUCCESS":
+      console.log("Update password success");
+      return {
+        ...state,
+        authErr: null,
+        key: new Date().getTime() + Math.random(),
+      };
+    case "UPDATE_PASSWORD_FAILED":
+      console.log("Update password failed", action.error);
+      return {
+        ...state,
+        authErr: "Update password failed",
+        key: new Date().getTime() + Math.random(),
       };
     default:
       return state;
